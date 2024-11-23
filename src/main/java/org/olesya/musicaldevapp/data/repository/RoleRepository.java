@@ -59,7 +59,7 @@ public class RoleRepository extends BaseTable {
     public Role getRoleById(@NonNull UUID roleId) throws CommonException {
         try {
             PreparedStatement ps = super.prepareStatement(
-                    "SELECT r.role_id,rt.role_name FROM roles r WHERE r.role_id=?;"
+                    "SELECT r.role_id,r.role_name FROM roles r WHERE r.role_id=?;"
             );
             ps.setObject(1, roleId);
             return getRole(ps);
@@ -71,7 +71,7 @@ public class RoleRepository extends BaseTable {
     public List<Role> getAllRoles() throws CommonException {
         try {
             PreparedStatement ps = super.prepareStatement(
-                    "SELECT r.role_id,rt.role_name FROM roles r;"
+                    "SELECT r.role_id,r.role_name FROM roles r;"
             );
             return getRoleList(ps);
         } catch (SQLException e) {
@@ -82,7 +82,7 @@ public class RoleRepository extends BaseTable {
     public Role getRoleByName(@NonNull String roleName) throws CommonException {
         try {
             PreparedStatement ps = super.prepareStatement(
-                    "SELECT r.role_id,rt.role_name FROM roles r WHERE r.role_name=?;"
+                    "SELECT r.role_id,r.role_name FROM roles r WHERE r.role_name=?;"
             );
             ps.setString(1, roleName);
             return getRole(ps);
@@ -115,7 +115,7 @@ public class RoleRepository extends BaseTable {
         try {
             ResultSet rs = super.executeSqlStatementRead(ps);
             List<Role> roleList = new ArrayList<>();
-            if (rs.next()) {
+            while (rs.next()) {
                 roleList.add(new Role(
                         rs.getObject(1, UUID.class),
                         rs.getString(2)

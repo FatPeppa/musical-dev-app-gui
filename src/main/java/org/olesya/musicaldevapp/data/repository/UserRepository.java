@@ -23,7 +23,7 @@ public class UserRepository extends BaseTable {
             throw new CommonException("При сохранении пользователя все поля должны быть заполнены");
         UUID userId = UUID.randomUUID();
         try {
-            PreparedStatement ps = super.prepareStatement("INSERT INTO development VALUES (?,?,?,?,?);");
+            PreparedStatement ps = super.prepareStatement("INSERT INTO users VALUES (?,?,?,?,?);");
             ps.setObject(1, userId);
             ps.setObject(2, user.getRoleId());
             ps.setString(3, user.getUserName());
@@ -89,6 +89,19 @@ public class UserRepository extends BaseTable {
                     "SELECT u.user_id,u.role_id,u.username,u.user_age,u.password FROM users u;"
             );
             return getUserList(ps);
+        } catch (SQLException e) {
+            throw new CommonException(e.getMessage());
+        }
+    }
+
+    public User getUserByUserNameAndPassword(String username, String password) throws CommonException {
+        try {
+            PreparedStatement ps = super.prepareStatement(
+                    "SELECT u.user_id,u.role_id,u.username,u.user_age,u.password FROM users u WHERE u.username=? AND u.password=?;"
+            );
+            ps.setString(1, username);
+            ps.setString(2, password);
+            return getUser(ps);
         } catch (SQLException e) {
             throw new CommonException(e.getMessage());
         }

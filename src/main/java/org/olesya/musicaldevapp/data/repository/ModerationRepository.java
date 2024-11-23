@@ -111,7 +111,7 @@ public class ModerationRepository extends BaseTable {
         try {
             ResultSet rs = super.executeSqlStatementRead(ps);
             List<Moderation> moderationList = new ArrayList<>();
-            if (rs.next()) {
+            while (rs.next()) {
                 moderationList.add(new Moderation(
                         rs.getObject(1, UUID.class),
                         rs.getObject(2, UUID.class)

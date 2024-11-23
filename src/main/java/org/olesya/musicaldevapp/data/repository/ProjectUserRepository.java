@@ -132,7 +132,7 @@ public class ProjectUserRepository extends BaseTable {
         try {
             ResultSet rs = super.executeSqlStatementRead(ps);
             List<ProjectUser> projectUserList = new ArrayList<>();
-            if (rs.next()) {
+            while (rs.next()) {
                 projectUserList.add(new ProjectUser(
                         rs.getObject(1, UUID.class),
                         rs.getObject(2, UUID.class),

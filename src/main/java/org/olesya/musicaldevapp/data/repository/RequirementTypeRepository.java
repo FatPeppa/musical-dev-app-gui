@@ -115,7 +115,7 @@ public class RequirementTypeRepository extends BaseTable {
         try {
             ResultSet rs = super.executeSqlStatementRead(ps);
             List<RequirementType> requirementTypeList = new ArrayList<>();
-            if (rs.next()) {
+            while (rs.next()) {
                 requirementTypeList.add(new RequirementType(
                         rs.getObject(1, UUID.class),
                         rs.getString(2)

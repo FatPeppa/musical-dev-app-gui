@@ -186,7 +186,7 @@ public class TestingRepository extends BaseTable {
         try {
             ResultSet rs = super.executeSqlStatementRead(ps);
             List<Testing> testingList = new ArrayList<>();
-            if (rs.next()) {
+            while (rs.next()) {
                 UUID testId = rs.getObject(1, UUID.class);
                 String fileExtension = rs.getString(6);
                 File tempFile = null;

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="552.0" prefWidth="865.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.olesya.musicaldevapp.MainViewController">
+   <children>
+      <HBox alignment="CENTER" layoutX="8.0" layoutY="14.0" prefHeight="27.0" prefWidth="850.0">
+         <children>
+            <Label fx:id="currentUserLabel" />
+            <Button fx:id="exitButton" mnemonicParsing="false" text="Выйти">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin></Button>
+         </children></HBox>
+   </children>
+</AnchorPane>
