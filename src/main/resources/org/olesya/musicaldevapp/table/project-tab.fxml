@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.olesya.musicaldevapp.controller.ProjectController"
+            prefHeight="400.0" prefWidth="600.0">
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+        <TableView fx:id="projectTable" prefHeight="299.0" prefWidth="1052.0">
+            <columns>
+                <TableColumn fx:id="projectIdProjectTable" prefWidth="202.20000302791595" text="ID проекта" />
+                <TableColumn fx:id="projectNameProjectTable" minWidth="0.0" prefWidth="206.79998779296875" text="Имя проекта" />
+                <TableColumn fx:id="createDateProjectTable" minWidth="0.0" prefWidth="206.79998779296875" text="Дата создания" />
+                <TableColumn fx:id="lastChangeDateProjectTable" minWidth="0.0" prefWidth="206.79998779296875" text="Дата последнего редактирования" />
+                <TableColumn fx:id="versionProjectTable" minWidth="0.0" prefWidth="206.79998779296875" text="Версия" />
+            </columns>
+        </TableView>
+    </AnchorPane>
+</AnchorPane>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.olesya.musicaldevapp.controller.UserController"
+            prefHeight="400.0" prefWidth="600.0">
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+        <TableView fx:id="usersTable" prefHeight="299.0" prefWidth="1061.0">
+            <columns>
+                <TableColumn fx:id="userIdUsersTable" prefWidth="202.20000302791595" text="ID пользователя" />
+                <TableColumn fx:id="roleIdUsersTable" minWidth="0.0" prefWidth="206.79998779296875" text="ID роли" />
+                <TableColumn fx:id="usernameUsersTable" minWidth="0.0" prefWidth="206.79998779296875" text="Логин" />
+                <TableColumn fx:id="userAgeUsersTable" minWidth="0.0" prefWidth="206.79998779296875" text="Возраст" />
+                <TableColumn fx:id="passwordUsersTable" minWidth="0.0" prefWidth="206.79998779296875" text="Пароль" />
+            </columns>
+        </TableView>
+    </AnchorPane>
+</AnchorPane>

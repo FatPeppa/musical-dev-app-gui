@@ -13,7 +13,23 @@ import java.util.List;
 import java.util.UUID;
 
 public class RoleRepository extends BaseTable {
-    public RoleRepository() throws SQLException {
+    public RoleRepository() throws SQLException, CommonException {
+        initializeData();
+    }
+    
+    public boolean initializeData() throws CommonException {
+        List<String> necessaryRoles = List.of(
+                "USER",
+                "ADMIN"
+        );
+        boolean dataWasInitialized = false;
+        List<Role> roles = getAllRoles();
+        for (String s : necessaryRoles)
+            if (roles.stream().noneMatch(r -> r.getRoleName().equals(s))) {
+                saveRole(new Role(null, s));
+                dataWasInitialized = true;
+            }
+        return dataWasInitialized;
     }
 
     public UUID saveRole(@NonNull Role role) throws CommonException {

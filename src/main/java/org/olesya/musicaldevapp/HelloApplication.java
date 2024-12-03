@@ -37,7 +37,7 @@ public class HelloApplication extends Application {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Ошибка");
         alert.setHeaderText("Произошла ошибка");
-        alert.setContentText(String.format("Произошла ошибка. Текст ошибки: %s", e.getMessage()));
+        alert.setContentText(String.format("Произошла ошибка. Текст ошибки: %s", e.getCause()));
         alert.setResizable(true);
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.getDialogPane().setMinWidth(Region.USE_PREF_SIZE);

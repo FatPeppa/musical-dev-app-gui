@@ -47,7 +47,7 @@ public class RequirementTypeRepository extends BaseTable {
     public void deleteRequirementType(@NonNull UUID requirementTypeId) throws CommonException {
         try {
             PreparedStatement ps = super.prepareStatement(
-                    "DELETE FROM requirement_type WHERE requirement_type_id=?;"
+                    "DELETE FROM requirement_types WHERE requirement_type_id=?;"
             );
             ps.setObject(1, requirementTypeId);
             super.executeSqlStatementUpdate(ps);
@@ -59,7 +59,7 @@ public class RequirementTypeRepository extends BaseTable {
     public RequirementType getRequirementTypeById(@NonNull UUID requirementTypeId) throws CommonException {
         try {
             PreparedStatement ps = super.prepareStatement(
-                    "SELECT rt.requirement_type_id,rt.requirement_type_name FROM requirement_type rt WHERE rt.requirement_type_id=?;"
+                    "SELECT rt.requirement_type_id,rt.requirement_type_name FROM requirement_types rt WHERE rt.requirement_type_id=?;"
             );
             ps.setObject(1, requirementTypeId);
             return getRequirementType(ps);
@@ -71,7 +71,7 @@ public class RequirementTypeRepository extends BaseTable {
     public List<RequirementType> getAllRequirementTypes() throws CommonException {
         try {
             PreparedStatement ps = super.prepareStatement(
-                    "SELECT rt.requirement_type_id,rt.requirement_type_name FROM requirement_type rt;"
+                    "SELECT rt.requirement_type_id,rt.requirement_type_name FROM requirement_types rt;"
             );
             return getRequirementTypeList(ps);
         } catch (SQLException e) {
@@ -82,7 +82,7 @@ public class RequirementTypeRepository extends BaseTable {
     public RequirementType getRequirementTypeByName(@NonNull String requirementTypeName) throws CommonException {
         try {
             PreparedStatement ps = super.prepareStatement(
-                    "SELECT rt.requirement_type_id,rt.requirement_type_name FROM requirement_type rt WHERE rt.requirement_type_name=?;"
+                    "SELECT rt.requirement_type_id,rt.requirement_type_name FROM requirement_types rt WHERE rt.requirement_type_name=?;"
             );
             ps.setString(1, requirementTypeName);
             return getRequirementType(ps);

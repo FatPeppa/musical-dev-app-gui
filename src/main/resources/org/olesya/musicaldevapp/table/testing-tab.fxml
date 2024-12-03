@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.olesya.musicaldevapp.controller.TestingController"
+            prefHeight="400.0" prefWidth="600.0">
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+        <TableView fx:id="testingTable" prefHeight="267.0" prefWidth="1150.0">
+            <columns>
+                <TableColumn fx:id="testIdTestingTable" prefWidth="202.20000302791595" text="ID теста" />
+                <TableColumn fx:id="projectIdTestingTable" minWidth="0.0" prefWidth="143.2000274658203" text="ID проекта" />
+                <TableColumn fx:id="testContentTestingTable" minWidth="0.0" prefWidth="157.0" text="Контент" />
+                <TableColumn fx:id="createDateTestingTable" minWidth="0.0" prefWidth="162.4000244140625" text="Дата создания" />
+                <TableColumn fx:id="lastChangeDateTestingTable" minWidth="0.0" prefWidth="236.20001220703125" text="Дата последнего редактирования" />
+                <TableColumn fx:id="fileExtensionTestingTable" minWidth="0.0" prefWidth="201.39990234375" text="Расширение контента" />
+            </columns>
+        </TableView>
+    </AnchorPane>
+</AnchorPane>

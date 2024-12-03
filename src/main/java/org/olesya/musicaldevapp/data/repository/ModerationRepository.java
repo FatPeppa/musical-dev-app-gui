@@ -87,6 +87,17 @@ public class ModerationRepository extends BaseTable {
         }
     }
 
+    public List<Moderation> getAllModerations() throws CommonException {
+        try {
+            PreparedStatement ps = super.prepareStatement(
+                    "SELECT m.track_id,m.project_id FROM moderation m;"
+            );
+            return getModerationList(ps);
+        } catch (SQLException e) {
+            throw new CommonException(e.getMessage());
+        }
+    }
+
     public Moderation getModeration(@NonNull PreparedStatement ps) throws CommonException {
         try {
             ResultSet rs = super.executeSqlStatementRead(ps);

@@ -12,6 +12,7 @@ import org.olesya.musicaldevapp.data.entity.User;
 import org.olesya.musicaldevapp.data.repository.UserRepository;
 import org.olesya.musicaldevapp.utils.CommonException;
 import org.olesya.musicaldevapp.utils.ControllerUtils;
+import org.olesya.musicaldevapp.utils.CurrentUserContainer;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -43,10 +44,10 @@ public class EnterViewController {
                 if (user == null)
                     ControllerUtils.showCommonWarningAlert("Такого пользователя не существует!");
                 else {
+                    CurrentUserContainer.setCurrentUser(user);
                     FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("main-view.fxml"));
                     Parent root = loader.load();
                     MainViewController mainViewController = loader.getController();
-                    mainViewController.setCurrentUser(user);
 
                     Stage stage = (Stage) enterButton.getScene().getWindow();
                     Scene scene = new Scene(root);

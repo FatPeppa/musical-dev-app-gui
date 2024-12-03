@@ -16,9 +16,11 @@ module org.olesya.musicaldevapp {
     exports org.olesya.musicaldevapp.data.repository;
     exports org.olesya.musicaldevapp.data.entity;
     exports org.olesya.musicaldevapp.utils;
+    exports org.olesya.musicaldevapp.controller;
 
     opens org.olesya.musicaldevapp to javafx.fxml;
     opens org.olesya.musicaldevapp.data.repository to javafx.fxml;
     opens org.olesya.musicaldevapp.data.entity to javafx.fxml;
     opens org.olesya.musicaldevapp.utils to javafx.fxml;
+    opens org.olesya.musicaldevapp.controller to javafx.fxml;
 }
