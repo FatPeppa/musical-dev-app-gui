@@ -4,7 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
@@ -14,7 +13,10 @@ import javafx.scene.text.Text;
 import lombok.Setter;
 import org.olesya.musicaldevapp.HelloApplication;
 import org.olesya.musicaldevapp.data.entity.*;
-import org.olesya.musicaldevapp.data.repository.*;
+import org.olesya.musicaldevapp.data.repository.AnalyticsRepository;
+import org.olesya.musicaldevapp.data.repository.ProjectRepository;
+import org.olesya.musicaldevapp.data.repository.ProjectUserRepository;
+import org.olesya.musicaldevapp.data.repository.RoleRepository;
 import org.olesya.musicaldevapp.utils.CommonException;
 import org.olesya.musicaldevapp.utils.ControllerUtils;
 import org.olesya.musicaldevapp.utils.CurrentUserContainer;
@@ -23,7 +25,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public class ProjectController {
@@ -443,15 +444,9 @@ public class ProjectController {
         grid.add(new Label("Количество требований по проекту:"), 0, 4);
         grid.add(projectAnalyticsAmountTextField, 1, 4);
 
-        Node stopViewingButton = dialog.getDialogPane().lookupButton(stopViewingButtonType);
-
         dialog.getDialogPane().setContent(grid);
 
         dialog.setResultConverter(dialogButton -> dialogButton == stopViewingButtonType);
-
-        Optional<Boolean> result = dialog.showAndWait();
-
-        return;
     }
 
     private boolean checkIfTheCurrentUserIsAdmin() throws CommonException {
