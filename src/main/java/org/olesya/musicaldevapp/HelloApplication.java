@@ -8,6 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
+import org.olesya.musicaldevapp.utils.CommonException;
 
 import java.io.IOException;
 
@@ -37,7 +38,15 @@ public class HelloApplication extends Application {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Ошибка");
         alert.setHeaderText("Произошла ошибка");
-        alert.setContentText(String.format("Произошла ошибка. Текст ошибки: %s", e.getCause()));
+        String errorMessage = e.getMessage();
+        if (e.getCause() != null && e.getCause() instanceof CommonException)
+            errorMessage = e.getCause().getMessage();
+        if (e.getCause() != null && e.getCause().getCause() != null && e.getCause().getCause() instanceof CommonException) {
+            if (e.getCause().getCause() instanceof CommonException) {
+                errorMessage = e.getCause().getCause().getMessage();
+            }
+        }
+        alert.setContentText(String.format("Произошла ошибка. Текст ошибки: %s", errorMessage));
         alert.setResizable(true);
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.getDialogPane().setMinWidth(Region.USE_PREF_SIZE);

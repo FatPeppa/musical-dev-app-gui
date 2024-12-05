@@ -107,6 +107,9 @@ public class ModerationRepository extends BaseTable {
                         rs.getObject(1, UUID.class),
                         rs.getObject(2, UUID.class)
                 );
+                ProjectRepository projectRepository = new ProjectRepository();
+                String projectName = projectRepository.getProjectById(rs.getObject(2, UUID.class)).getProjectName();
+                moderation.setProjectName(projectName);
             }
 
             rs.close();
@@ -123,9 +126,12 @@ public class ModerationRepository extends BaseTable {
             ResultSet rs = super.executeSqlStatementRead(ps);
             List<Moderation> moderationList = new ArrayList<>();
             while (rs.next()) {
+                ProjectRepository projectRepository = new ProjectRepository();
+                String projectName = projectRepository.getProjectById(rs.getObject(2, UUID.class)).getProjectName();
                 moderationList.add(new Moderation(
                         rs.getObject(1, UUID.class),
-                        rs.getObject(2, UUID.class)
+                        rs.getObject(2, UUID.class),
+                        projectName
                 ));
             }
 

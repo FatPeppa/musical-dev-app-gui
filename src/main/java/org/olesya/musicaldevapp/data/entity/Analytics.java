@@ -19,4 +19,17 @@ public class Analytics {
     private LocalDate createDate;
     private LocalDate lastChangeDate;
     private String fileExtension;
+
+    private String projectName;
+    private String requirementTypeName;
+
+    public Analytics(UUID requirementId, UUID projectId, UUID requirementTypeId, File requirementContent, LocalDate createDate, LocalDate lastChangeDate, String fileExtension) {
+        this.requirementId = requirementId;
+        this.projectId = projectId;
+        this.requirementTypeId = requirementTypeId;
+        this.requirementContent = requirementContent;
+        this.createDate = createDate;
+        this.lastChangeDate = lastChangeDate;
+        this.fileExtension = fileExtension;
+    }
 }

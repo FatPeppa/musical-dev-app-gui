@@ -118,6 +118,14 @@ public class ProjectUserRepository extends BaseTable {
                         rs.getObject(2, UUID.class),
                         rs.getObject(3, UUID.class)
                 );
+
+                ProjectRepository projectRepository = new ProjectRepository();
+                String projectName = projectRepository.getProjectById(rs.getObject(2, UUID.class)).getProjectName();
+                projectUser.setProjectName(projectName);
+
+                UserRepository userRepository = new UserRepository();
+                String userName = userRepository.getUserById(rs.getObject(2, UUID.class)).getUserName();
+                projectUser.setUserName(userName);
             }
             rs.close();
             ps.close();
@@ -133,10 +141,17 @@ public class ProjectUserRepository extends BaseTable {
             ResultSet rs = super.executeSqlStatementRead(ps);
             List<ProjectUser> projectUserList = new ArrayList<>();
             while (rs.next()) {
+                ProjectRepository projectRepository = new ProjectRepository();
+                String projectName = projectRepository.getProjectById(rs.getObject(2, UUID.class)).getProjectName();
+
+                UserRepository userRepository = new UserRepository();
+                String userName = userRepository.getUserById(rs.getObject(3, UUID.class)).getUserName();
                 projectUserList.add(new ProjectUser(
                         rs.getObject(1, UUID.class),
                         rs.getObject(2, UUID.class),
-                        rs.getObject(3, UUID.class)
+                        rs.getObject(3, UUID.class),
+                        projectName,
+                        userName
                 ));
             }
             rs.close();

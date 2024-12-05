@@ -40,13 +40,12 @@ public class ProjectRepository extends BaseTable {
                 || project.getLastChangeDate() == null || project.getVersion() == null || project.getVersion().isEmpty())
             throw new CommonException("При обновлении проекта все поля должны быть заполнены");
         try {
-            UUID projectId = UUID.randomUUID();
             PreparedStatement ps = super.prepareStatement("UPDATE project SET project_name=?,create_date=?,last_change_date=?,version=? WHERE project_id=?;");
             ps.setString(1, project.getProjectName());
             ps.setObject(2, project.getCreateDate());
             ps.setObject(3, project.getLastChangeDate());
             ps.setString(4, project.getVersion());
-            ps.setObject(5, projectId);
+            ps.setObject(5, project.getProjectId());
             super.executeSqlStatementUpdate(ps);
         } catch (SQLException e) {
             throw new CommonException(e.getMessage());

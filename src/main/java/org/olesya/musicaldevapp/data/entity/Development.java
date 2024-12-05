@@ -19,4 +19,16 @@ public class Development {
     private LocalDate createDate;
     private LocalDate lastChangeDate;
     private String fileExtension;
+
+    private String projectName;
+
+    public Development(UUID fileId, UUID projectId, File codeFile, String version, LocalDate createDate, LocalDate lastChangeDate, String fileExtension) {
+        this.fileId = fileId;
+        this.projectId = projectId;
+        this.codeFile = codeFile;
+        this.version = version;
+        this.createDate = createDate;
+        this.lastChangeDate = lastChangeDate;
+        this.fileExtension = fileExtension;
+    }
 }

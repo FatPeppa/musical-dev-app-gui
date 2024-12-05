@@ -51,7 +51,7 @@ public class TestingRepository extends BaseTable {
         }
     }
 
-    public void updateDevelopment(@NonNull Testing testing, UUID oldProjectId) throws CommonException {
+    public void updateTesting(@NonNull Testing testing, UUID oldProjectId) throws CommonException {
         if (testing.getTestId() == null || testing.getProjectId() == null || testing.getTestContent() == null || testing.getCreateDate() == null || testing.getLastChangeDate() == null
                 || testing.getFileExtension() == null || testing.getFileExtension().isEmpty()) {
             throw new CommonException("При обновлении тестирования все поля должны быть заполнены");
@@ -171,6 +171,10 @@ public class TestingRepository extends BaseTable {
                         rs.getDate(5).toLocalDate(),
                         fileExtension
                 );
+
+                ProjectRepository projectRepository = new ProjectRepository();
+                String projectName = projectRepository.getProjectById(rs.getObject(2, UUID.class)).getProjectName();
+                testing.setProjectName(projectName);
             }
 
             rs.close();
@@ -200,13 +204,17 @@ public class TestingRepository extends BaseTable {
                         );
                     }
 
+                ProjectRepository projectRepository = new ProjectRepository();
+                String projectName = projectRepository.getProjectById(rs.getObject(2, UUID.class)).getProjectName();
+
                 testingList.add(new Testing(
                         testId,
                         rs.getObject(2, UUID.class),
                         tempFile,
                         rs.getDate(4).toLocalDate(),
                         rs.getDate(5).toLocalDate(),
-                        fileExtension
+                        fileExtension,
+                        projectName
                 ));
             }
 

@@ -172,6 +172,10 @@ public class DevelopmentRepository extends BaseTable {
                         rs.getDate(6).toLocalDate(),
                         fileExtension
                 );
+
+                ProjectRepository projectRepository = new ProjectRepository();
+                String projectName = projectRepository.getProjectById(rs.getObject(2, UUID.class)).getProjectName();
+                development.setProjectName(projectName);
             }
 
             rs.close();
@@ -201,6 +205,9 @@ public class DevelopmentRepository extends BaseTable {
                         );
                     }
 
+                ProjectRepository projectRepository = new ProjectRepository();
+                String projectName = projectRepository.getProjectById(rs.getObject(2, UUID.class)).getProjectName();
+
                 developmentList.add(new Development(
                         fileId,
                         rs.getObject(2, UUID.class),
@@ -208,7 +215,8 @@ public class DevelopmentRepository extends BaseTable {
                         rs.getString(4),
                         rs.getDate(5).toLocalDate(),
                         rs.getDate(6).toLocalDate(),
-                        fileExtension
+                        fileExtension,
+                        projectName
                 ));
             }
 

@@ -44,7 +44,7 @@ public class UserRepository extends BaseTable {
                 || user.getPassword() == null || user.getPassword().isEmpty())
             throw new CommonException("При обновлении пользователя все поля должны быть заполнены");
         try {
-            PreparedStatement ps = super.prepareStatement("UPDATE users SET role_id=?,user_name=?,user_age=?,password=? WHERE user_id=?;");
+            PreparedStatement ps = super.prepareStatement("UPDATE users SET role_id=?,username=?,user_age=?,password=? WHERE user_id=?;");
             ps.setObject(1, user.getRoleId());
             ps.setString(2, user.getUserName());
             if (user.getUserAge() == null)
@@ -147,6 +147,10 @@ public class UserRepository extends BaseTable {
                         rs.getString(5),
                         rs.getInt(4)
                 );
+
+                RoleRepository roleRepository = new RoleRepository();
+                String roleName = roleRepository.getRoleById(user.getRoleId()).getRoleName();
+                user.setRoleName(roleName);
             }
 
             rs.close();
@@ -163,12 +167,15 @@ public class UserRepository extends BaseTable {
             ResultSet rs = super.executeSqlStatementRead(ps);
             List<User> userList = new ArrayList<>();
             while (rs.next()) {
+                RoleRepository roleRepository = new RoleRepository();
+                String roleName = roleRepository.getRoleById(rs.getObject(2, UUID.class)).getRoleName();
                 userList.add(new User(
                         rs.getObject(1, UUID.class),
                         rs.getObject(2, UUID.class),
                         rs.getString(3),
                         rs.getString(5),
-                        rs.getInt(4)
+                        rs.getInt(4),
+                        roleName
                 ));
             }
 

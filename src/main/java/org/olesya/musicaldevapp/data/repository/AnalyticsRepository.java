@@ -202,6 +202,13 @@ public class AnalyticsRepository extends BaseTable {
                         rs.getDate(6).toLocalDate(),
                         fileExtension
                 );
+
+                ProjectRepository projectRepository = new ProjectRepository();
+                String projectName = projectRepository.getProjectById(rs.getObject(2, UUID.class)).getProjectName();
+                analytics.setProjectName(projectName);
+                RequirementTypeRepository requirementTypeRepository = new RequirementTypeRepository();
+                String requirementTypeName = requirementTypeRepository.getRequirementTypeById(rs.getObject(3, UUID.class)).getRequirementTypeName();
+                analytics.setRequirementTypeName(requirementTypeName);
             }
 
             rs.close();
@@ -231,6 +238,11 @@ public class AnalyticsRepository extends BaseTable {
                         );
                     }
 
+                ProjectRepository projectRepository = new ProjectRepository();
+                String projectName = projectRepository.getProjectById(rs.getObject(2, UUID.class)).getProjectName();
+                RequirementTypeRepository requirementTypeRepository = new RequirementTypeRepository();
+                String requirementTypeName = requirementTypeRepository.getRequirementTypeById(rs.getObject(3, UUID.class)).getRequirementTypeName();
+
                 analyticsList.add(new Analytics(
                         requirementId,
                         rs.getObject(2, UUID.class),
@@ -238,7 +250,9 @@ public class AnalyticsRepository extends BaseTable {
                         tempFile,
                         rs.getDate(5).toLocalDate(),
                         rs.getDate(6).toLocalDate(),
-                        fileExtension
+                        fileExtension,
+                        projectName,
+                        requirementTypeName
                 ));
             }
 
