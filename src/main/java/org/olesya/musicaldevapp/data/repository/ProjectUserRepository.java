@@ -20,7 +20,8 @@ public class ProjectUserRepository extends BaseTable {
         if (projectUser.getProjectId() == null || projectUser.getUserId() == null)
             throw new CommonException("При сохранении связи пользователя с проектом все поля должны быть заполнены");
         try {
-            PreparedStatement ps = super.prepareStatement("INSERT INTO project_users VALUES (?,?,?);");
+            //PreparedStatement ps = super.prepareStatement("INSERT INTO project_users VALUES (?,?,?);");
+            PreparedStatement ps = super.prepareStatement("CALL add_user_to_project(?,?,?);");
             UUID projectUserId = UUID.randomUUID();
             ps.setObject(1, projectUserId);
             ps.setObject(2, projectUser.getProjectId());

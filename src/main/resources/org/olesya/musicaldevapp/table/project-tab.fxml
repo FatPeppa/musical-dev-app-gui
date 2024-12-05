@@ -131,7 +131,11 @@
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin></Button>
-                  <Button fx:id="stopSelectionButton" mnemonicParsing="false" text="Снять выделение" />
+                  <Button fx:id="stopSelectionButton" mnemonicParsing="false" text="Снять выделение">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin></Button>
+                  <Button fx:id="checkProjectAggregatedInfoButton" disable="true" mnemonicParsing="false" text="Просмотреть агрегированные данные по проекту" />
                     </children>
                 </HBox>
             </children>

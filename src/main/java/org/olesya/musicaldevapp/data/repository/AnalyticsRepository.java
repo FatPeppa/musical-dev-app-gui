@@ -175,6 +175,24 @@ public class AnalyticsRepository extends BaseTable {
         }
     }
 
+    public Integer getProjectRequirementsCount(@NonNull UUID projectId) throws CommonException {
+        try {
+            PreparedStatement ps = super.prepareStatement("SELECT get_requirements_count(?);");
+            ps.setObject(1, projectId);
+            ResultSet rs = super.executeSqlStatementRead(ps);
+            Integer projectRequirementsAmount = null;
+            if (rs.next()) {
+                projectRequirementsAmount = rs.getInt(1);
+            }
+            rs.close();
+            ps.close();
+            super.close();
+            return projectRequirementsAmount;
+        } catch (SQLException e) {
+            throw new CommonException(e.getMessage());
+        }
+    }
+
     private Analytics getAnalytics(@NonNull PreparedStatement ps) throws CommonException {
         try {
             ResultSet rs = super.executeSqlStatementRead(ps);

@@ -9,10 +9,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.Setter;
-import org.olesya.musicaldevapp.data.entity.Moderation;
-import org.olesya.musicaldevapp.data.entity.Project;
-import org.olesya.musicaldevapp.data.entity.ProjectUser;
-import org.olesya.musicaldevapp.data.entity.User;
+import org.olesya.musicaldevapp.data.entity.*;
 import org.olesya.musicaldevapp.data.repository.*;
 import org.olesya.musicaldevapp.utils.CommonException;
 import org.olesya.musicaldevapp.utils.ControllerUtils;
@@ -59,15 +56,10 @@ public class ModerationController {
     @FXML
     private Button stopSelectionButton;
 
-    private AnalyticsRepository analyticsRepository;
-    private DevelopmentRepository developmentRepository;
     private ModerationRepository moderationRepository;
     private ProjectRepository projectRepository;
     private ProjectUserRepository projectUserRepository;
-    private RequirementTypeRepository requirementTypeRepository;
     private RoleRepository roleRepository;
-    private TestingRepository testingRepository;
-    private UserRepository userRepository;
 
     @Setter
     private User currentUser = CurrentUserContainer.getCurrentUser();
@@ -75,15 +67,10 @@ public class ModerationController {
     private Moderation selectedModeration = null;
 
     public void initialize() throws SQLException, CommonException {
-        analyticsRepository = new AnalyticsRepository();
-        developmentRepository = new DevelopmentRepository();
         moderationRepository = new ModerationRepository();
         projectRepository = new ProjectRepository();
         projectUserRepository = new ProjectUserRepository();
-        requirementTypeRepository = new RequirementTypeRepository();
         roleRepository = new RoleRepository();
-        testingRepository = new TestingRepository();
-        userRepository = new UserRepository();
         setCellValueFactories();
         baseFillTable();
         setOnActionFilterButton();
@@ -142,9 +129,7 @@ public class ModerationController {
     }
 
     private void setOnActionStopSelectionButton() {
-        stopSelectionButton.setOnAction(event -> {
-            clearSelection();
-        });
+        stopSelectionButton.setOnAction(event -> clearSelection());
     }
 
     private void clearSelection() {
@@ -292,5 +277,12 @@ public class ModerationController {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    private boolean checkIfTheCurrentUserIsAdmin() throws CommonException {
+        Role userRole = roleRepository.getRoleById(
+                currentUser.getRoleId()
+        );
+        return userRole.getRoleName().equals("ADMIN");
     }
 }

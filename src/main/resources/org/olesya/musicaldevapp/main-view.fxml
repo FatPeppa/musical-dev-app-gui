@@ -18,47 +18,47 @@
         <tabs>
             <Tab text="Аналитика">
                 <content>
-                    <fx:include source="table/analytics-tab.fxml"/>
+                    <fx:include source="table/analytics-tab.fxml" />
                 </content>
             </Tab>
             <Tab text="Разработка">
                 <content>
-                    <fx:include source="table/development-tab.fxml"/>
+                    <fx:include source="table/development-tab.fxml" />
                 </content>
             </Tab>
             <Tab text="Модерация">
                 <content>
-                    <fx:include source="table/moderation-tab.fxml"/>
+                    <fx:include source="table/moderation-tab.fxml" />
                 </content>
             </Tab>
             <Tab text="Проекты">
                 <content>
-                    <fx:include source="table/project-tab.fxml"/>
+                    <fx:include source="table/project-tab.fxml" />
                 </content>
             </Tab>
             <Tab text="Пользователи проектов">
                 <content>
-                    <fx:include source="table/project-user-tab.fxml"/>
+                    <fx:include source="table/project-user-tab.fxml" />
                 </content>
             </Tab>
             <Tab text="Типы требований">
                 <content>
-                    <fx:include source="table/requirement-type-tab.fxml"/>
+                    <fx:include source="table/requirement-type-tab.fxml" />
                 </content>
             </Tab>
             <Tab text="Роли">
                 <content>
-                    <fx:include source="table/role-tab.fxml"/>
+                    <fx:include source="table/role-tab.fxml" />
                 </content>
             </Tab>
             <Tab text="Тестирование">
                 <content>
-                    <fx:include source="table/testing-tab.fxml"/>
+                    <fx:include source="table/testing-tab.fxml" />
                 </content>
             </Tab>
-            <Tab text="Пользователи">
+            <Tab fx:id="usersTab" text="Пользователи">
                 <content>
-                    <fx:include source="table/user-tab.fxml"/>
+                    <fx:include source="table/user-tab.fxml" />
                 </content>
             </Tab>
         </tabs>

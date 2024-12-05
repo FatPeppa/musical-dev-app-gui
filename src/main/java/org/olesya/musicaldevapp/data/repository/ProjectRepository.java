@@ -2,6 +2,7 @@ package org.olesya.musicaldevapp.data.repository;
 
 import lombok.NonNull;
 import org.olesya.musicaldevapp.data.entity.Project;
+import org.olesya.musicaldevapp.data.entity.ProjectAggregatedInfo;
 import org.olesya.musicaldevapp.utils.BaseTable;
 import org.olesya.musicaldevapp.utils.CommonException;
 
@@ -97,6 +98,31 @@ public class ProjectRepository extends BaseTable {
             );
             ps.setString(1, projectName);
             return getProject(ps);
+        } catch (SQLException e) {
+            throw new CommonException(e.getMessage());
+        }
+    }
+
+    public ProjectAggregatedInfo getProjectAggregatedInfo(@NonNull UUID projectId) throws CommonException {
+        try {
+            ProjectAggregatedInfo projectAggregatedInfo = null;
+            PreparedStatement ps = super.prepareStatement(
+                    "SELECT projectname,createdate,lastchangedate FROM get_project_info(?);"
+            );
+            ps.setObject(1, projectId);
+            ResultSet rs = super.executeSqlStatementRead(ps);
+            if (rs.next()) {
+                projectAggregatedInfo = new ProjectAggregatedInfo(
+                        projectId,
+                        rs.getString(1),
+                        rs.getDate(2).toLocalDate(),
+                        rs.getDate(3).toLocalDate()
+                );
+            }
+            rs.close();
+            ps.close();
+            super.close();
+            return projectAggregatedInfo;
         } catch (SQLException e) {
             throw new CommonException(e.getMessage());
         }

@@ -54,7 +54,9 @@ public class DevelopmentRepository extends BaseTable {
 
     public void updateDevelopment(@NonNull Development development, UUID oldProjectId) throws CommonException {
         if (development.getFileId() == null || development.getProjectId() == null || development.getCodeFile() == null || development.getVersion() == null || development.getVersion().isEmpty()
-                || development.getCreateDate() == null || development.getLastChangeDate() == null || development.getFileExtension() == null || development.getFileExtension().isEmpty()) {
+                || development.getCreateDate() == null
+                //|| development.getLastChangeDate() == null
+                || development.getFileExtension() == null || development.getFileExtension().isEmpty()) {
             throw new CommonException("При обновлении разработки все поля должны быть заполнены");
         }
         try {

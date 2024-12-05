@@ -88,15 +88,10 @@ public class DevelopmentController {
     @FXML
     private Button stopSelectionButton;
 
-    private AnalyticsRepository analyticsRepository;
     private DevelopmentRepository developmentRepository;
-    private ModerationRepository moderationRepository;
     private ProjectRepository projectRepository;
     private ProjectUserRepository projectUserRepository;
-    private RequirementTypeRepository requirementTypeRepository;
     private RoleRepository roleRepository;
-    private TestingRepository testingRepository;
-    private UserRepository userRepository;
 
     @Setter
     private User currentUser = CurrentUserContainer.getCurrentUser();
@@ -104,15 +99,10 @@ public class DevelopmentController {
     private Development selectedDevelopment = null;
 
     public void initialize() throws SQLException, CommonException {
-        analyticsRepository = new AnalyticsRepository();
         developmentRepository = new DevelopmentRepository();
-        moderationRepository = new ModerationRepository();
         projectRepository = new ProjectRepository();
         projectUserRepository = new ProjectUserRepository();
-        requirementTypeRepository = new RequirementTypeRepository();
         roleRepository = new RoleRepository();
-        testingRepository = new TestingRepository();
-        userRepository = new UserRepository();
         setCellValueFactories();
         baseFillTable();
         setOnActionFilterButton();
@@ -176,9 +166,7 @@ public class DevelopmentController {
     }
 
     private void setOnActionStopSelectionButton() {
-        stopSelectionButton.setOnAction(event -> {
-            clearSelection();
-        });
+        stopSelectionButton.setOnAction(event -> clearSelection());
     }
 
     private void clearSelection() {
@@ -313,7 +301,7 @@ public class DevelopmentController {
                 development.setCodeFile(getContentInputField());
                 development.setVersion(getVersionInputField());
                 development.setCreateDate(LocalDate.now());
-                development.setLastChangeDate(LocalDate.now());
+                //development.setLastChangeDate(LocalDate.now());
                 development.setFileExtension(getFileExtensionInputField());
                 developmentRepository.saveDevelopment(
                         development
@@ -379,5 +367,12 @@ public class DevelopmentController {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    private boolean checkIfTheCurrentUserIsAdmin() throws CommonException {
+        Role userRole = roleRepository.getRoleById(
+                currentUser.getRoleId()
+        );
+        return userRole.getRoleName().equals("ADMIN");
     }
 }

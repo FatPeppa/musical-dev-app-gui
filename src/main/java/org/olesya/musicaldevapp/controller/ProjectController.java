@@ -3,12 +3,16 @@ package org.olesya.musicaldevapp.controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
+import javafx.scene.text.Text;
 import lombok.Setter;
+import org.olesya.musicaldevapp.HelloApplication;
 import org.olesya.musicaldevapp.data.entity.*;
 import org.olesya.musicaldevapp.data.repository.*;
 import org.olesya.musicaldevapp.utils.CommonException;
@@ -19,6 +23,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class ProjectController {
@@ -76,15 +81,13 @@ public class ProjectController {
     @FXML
     private Button stopSelectionButton;
 
+    @FXML
+    private Button checkProjectAggregatedInfoButton;
+
     private AnalyticsRepository analyticsRepository;
-    private DevelopmentRepository developmentRepository;
-    private ModerationRepository moderationRepository;
     private ProjectRepository projectRepository;
     private ProjectUserRepository projectUserRepository;
-    private RequirementTypeRepository requirementTypeRepository;
     private RoleRepository roleRepository;
-    private TestingRepository testingRepository;
-    private UserRepository userRepository;
 
     @Setter
     private User currentUser = CurrentUserContainer.getCurrentUser();
@@ -93,14 +96,9 @@ public class ProjectController {
 
     public void initialize() throws SQLException, CommonException {
         analyticsRepository = new AnalyticsRepository();
-        developmentRepository = new DevelopmentRepository();
-        moderationRepository = new ModerationRepository();
         projectRepository = new ProjectRepository();
         projectUserRepository = new ProjectUserRepository();
-        requirementTypeRepository = new RequirementTypeRepository();
         roleRepository = new RoleRepository();
-        testingRepository = new TestingRepository();
-        userRepository = new UserRepository();
         setCellValueFactories();
         baseFillTable();
         setOnChangeListenerProjectId();
@@ -111,6 +109,7 @@ public class ProjectController {
         setSaveChangesButtonOnAction();
         setDeleteButtonOnAction();
         setAddButtonOnAction();
+        setCheckProjectAggregatedInfoButtonOnAction();
     }
 
     private void setCellValueFactories() {
@@ -180,9 +179,7 @@ public class ProjectController {
     }
 
     private void setOnActionStopSelectionButton() {
-        stopSelectionButton.setOnAction(event -> {
-            clearSelection();
-        });
+        stopSelectionButton.setOnAction(event -> clearSelection());
     }
 
     private void clearSelection() {
@@ -213,12 +210,14 @@ public class ProjectController {
                 addButton.setDisable(false);
                 saveChangesButton.setDisable(true);
                 deleteButton.setDisable(true);
+                checkProjectAggregatedInfoButton.setDisable(true);
                 clearFields();
             } else {
                 selectedProject = newSelection;
                 addButton.setDisable(true);
                 saveChangesButton.setDisable(false);
                 deleteButton.setDisable(false);
+                checkProjectAggregatedInfoButton.setDisable(false);
                 autoFillFields();
             }
         });
@@ -350,4 +349,115 @@ public class ProjectController {
         });
     }
 
+    private void setCheckProjectAggregatedInfoButtonOnAction() {
+        checkProjectAggregatedInfoButton.setOnAction(event -> {
+            try {
+                if (selectedProject == null)
+                    throw new CommonException(
+                            "Для просмотра агрегированных данных по проекту выберете проект"
+                    );
+                ProjectAggregatedInfo projectAggregatedInfo = projectRepository.getProjectAggregatedInfo(
+                        selectedProject.getProjectId()
+                );
+                projectAggregatedInfo.setProjectRequirementsAmount(
+                        analyticsRepository.getProjectRequirementsCount(
+                                selectedProject.getProjectId()
+                        )
+                );
+                showProjectAggregatedInfoViewingDialog(projectAggregatedInfo);
+            } catch (CommonException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    private void showProjectAggregatedInfoViewingDialog(ProjectAggregatedInfo projectAggregatedInfo) throws CommonException {
+        if (projectAggregatedInfo == null)
+            throw new CommonException(
+                    "Ошибка отображения формы просмотра агрегированной информации по проекту - информация не найдена"
+            );
+
+        Dialog<Boolean> dialog = new Dialog<>();
+        dialog.setTitle("Агрегированная информация по проекту");
+        dialog.setHeaderText("Просмотр агрегированной информации по проекту");
+
+        dialog.setResizable(true);
+        dialog.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        dialog.getDialogPane().setMinWidth(Region.USE_PREF_SIZE);
+
+        dialog.setGraphic(new ImageView(HelloApplication.class.getResource("images/project-aggregated-info-view-image.jpg").toString()));
+
+        ButtonType stopViewingButtonType = new ButtonType("Завершить просмотр", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(stopViewingButtonType);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        Text text;
+
+        TextField projectIdTextField = new TextField();
+        projectIdTextField.setText(projectAggregatedInfo.getProjectId().toString());
+        text = new Text(projectIdTextField.getText());
+        projectIdTextField.setPrefWidth(text.getLayoutBounds().getWidth() + 10);
+        projectIdTextField.setMinHeight(Region.USE_PREF_SIZE);
+        projectIdTextField.setEditable(false);
+
+        TextField projectNameTextField = new TextField();
+        projectNameTextField.setText(projectAggregatedInfo.getProjectName());
+        text = new Text(projectNameTextField.getText());
+        projectNameTextField.setPrefWidth(text.getLayoutBounds().getWidth() + 10);
+        projectNameTextField.setMinHeight(Region.USE_PREF_SIZE);
+        projectNameTextField.setEditable(false);
+
+        TextField projectCreateDateTextField = new TextField();
+        projectCreateDateTextField.setText(projectAggregatedInfo.getCreateDate().toString());
+        text = new Text(projectCreateDateTextField.getText());
+        projectCreateDateTextField.setPrefWidth(text.getLayoutBounds().getWidth() + 10);
+        projectCreateDateTextField.setMinHeight(Region.USE_PREF_SIZE);
+        projectCreateDateTextField.setEditable(false);
+
+        TextField projectLocalDateTextField = new TextField();
+        projectLocalDateTextField.setText(projectAggregatedInfo.getLastChangeDate().toString());
+        text = new Text(projectLocalDateTextField.getText());
+        projectLocalDateTextField.setPrefWidth(text.getLayoutBounds().getWidth() + 10);
+        projectLocalDateTextField.setMinHeight(Region.USE_PREF_SIZE);
+        projectLocalDateTextField.setEditable(false);
+
+        TextField projectAnalyticsAmountTextField = new TextField();
+        projectAnalyticsAmountTextField.setText(projectAggregatedInfo.getProjectRequirementsAmount().toString());
+        text = new Text(projectAnalyticsAmountTextField.getText());
+        projectAnalyticsAmountTextField.setPrefWidth(text.getLayoutBounds().getWidth() + 10);
+        projectAnalyticsAmountTextField.setMinHeight(Region.USE_PREF_SIZE);
+        projectAnalyticsAmountTextField.setEditable(false);
+
+        grid.add(new Label("ID проекта:"), 0, 0);
+        grid.add(projectIdTextField, 1, 0);
+        grid.add(new Label("Имя проекта:"), 0, 1);
+        grid.add(projectNameTextField, 1, 1);
+        grid.add(new Label("Дата создания проекта:"), 0, 2);
+        grid.add(projectCreateDateTextField, 1, 2);
+        grid.add(new Label("Дата последнего внесения изменений в проект:"), 0, 3);
+        grid.add(projectLocalDateTextField, 1, 3);
+        grid.add(new Label("Количество требований по проекту:"), 0, 4);
+        grid.add(projectAnalyticsAmountTextField, 1, 4);
+
+        Node stopViewingButton = dialog.getDialogPane().lookupButton(stopViewingButtonType);
+
+        dialog.getDialogPane().setContent(grid);
+
+        dialog.setResultConverter(dialogButton -> dialogButton == stopViewingButtonType);
+
+        Optional<Boolean> result = dialog.showAndWait();
+
+        return;
+    }
+
+    private boolean checkIfTheCurrentUserIsAdmin() throws CommonException {
+        Role userRole = roleRepository.getRoleById(
+                currentUser.getRoleId()
+        );
+        return userRole.getRoleName().equals("ADMIN");
+    }
 }

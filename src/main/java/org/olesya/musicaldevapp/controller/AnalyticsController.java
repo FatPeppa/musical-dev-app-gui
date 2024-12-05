@@ -89,14 +89,10 @@ public class AnalyticsController {
     private Button stopSelectionButton;
 
     private AnalyticsRepository analyticsRepository;
-    private DevelopmentRepository developmentRepository;
-    private ModerationRepository moderationRepository;
     private ProjectRepository projectRepository;
     private ProjectUserRepository projectUserRepository;
     private RequirementTypeRepository requirementTypeRepository;
     private RoleRepository roleRepository;
-    private TestingRepository testingRepository;
-    private UserRepository userRepository;
 
     @Setter
     private User currentUser = CurrentUserContainer.getCurrentUser();
@@ -105,14 +101,10 @@ public class AnalyticsController {
 
     public void initialize() throws SQLException, CommonException {
         analyticsRepository = new AnalyticsRepository();
-        developmentRepository = new DevelopmentRepository();
-        moderationRepository = new ModerationRepository();
         projectRepository = new ProjectRepository();
         projectUserRepository = new ProjectUserRepository();
         requirementTypeRepository = new RequirementTypeRepository();
         roleRepository = new RoleRepository();
-        testingRepository = new TestingRepository();
-        userRepository = new UserRepository();
         setCellValueFactories();
         baseFillTable();
         setOnChangeListenerRequirementId();
@@ -130,7 +122,6 @@ public class AnalyticsController {
         }
         setSaveChangesButtonOnAction();
         setOnActionStopSelectionButton();
-        setOnChangedSelectedProject();
         setOnChangedSelectedProject();
         setDeleteButtonOnAction();
         setAddButtonOnAction();
@@ -289,9 +280,7 @@ public class AnalyticsController {
     }
 
     private void setOnActionStopSelectionButton() {
-        stopSelectionButton.setOnAction(event -> {
-            clearSelection();
-        });
+        stopSelectionButton.setOnAction(event -> clearSelection());
     }
 
     private void clearSelection() {
@@ -455,5 +444,12 @@ public class AnalyticsController {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    private boolean checkIfTheCurrentUserIsAdmin() throws CommonException {
+        Role userRole = roleRepository.getRoleById(
+                currentUser.getRoleId()
+        );
+        return userRole.getRoleName().equals("ADMIN");
     }
 }

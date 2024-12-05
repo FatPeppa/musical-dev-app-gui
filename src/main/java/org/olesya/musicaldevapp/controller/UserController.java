@@ -76,14 +76,7 @@ public class UserController {
     @FXML
     private Button stopSelectionButton;
 
-    private AnalyticsRepository analyticsRepository;
-    private DevelopmentRepository developmentRepository;
-    private ModerationRepository moderationRepository;
-    private ProjectRepository projectRepository;
-    private ProjectUserRepository projectUserRepository;
-    private RequirementTypeRepository requirementTypeRepository;
     private RoleRepository roleRepository;
-    private TestingRepository testingRepository;
     private UserRepository userRepository;
 
     @Setter
@@ -92,14 +85,7 @@ public class UserController {
     private User selectedUser = null;
 
     public void initialize() throws SQLException, CommonException {
-        analyticsRepository = new AnalyticsRepository();
-        developmentRepository = new DevelopmentRepository();
-        moderationRepository = new ModerationRepository();
-        projectRepository = new ProjectRepository();
-        projectUserRepository = new ProjectUserRepository();
-        requirementTypeRepository = new RequirementTypeRepository();
         roleRepository = new RoleRepository();
-        testingRepository = new TestingRepository();
         userRepository = new UserRepository();
         setCellValueFactories();
         baseFillTable();
@@ -218,9 +204,7 @@ public class UserController {
     }
 
     private void setOnActionStopSelectionButton() {
-        stopSelectionButton.setOnAction(event -> {
-            clearSelection();
-        });
+        stopSelectionButton.setOnAction(event -> clearSelection());
     }
 
     private void clearSelection() {
@@ -369,5 +353,12 @@ public class UserController {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    private boolean checkIfTheCurrentUserIsAdmin() throws CommonException {
+        Role userRole = roleRepository.getRoleById(
+                currentUser.getRoleId()
+        );
+        return userRole.getRoleName().equals("ADMIN");
     }
 }

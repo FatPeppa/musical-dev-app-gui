@@ -9,6 +9,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.Setter;
+import lombok.extern.java.Log;
 import org.olesya.musicaldevapp.data.entity.*;
 import org.olesya.musicaldevapp.data.repository.*;
 import org.olesya.musicaldevapp.utils.CommonException;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Log
 public class RequirementTypeController {
     @FXML
     private TableView<RequirementType> requirementTypesTable;
@@ -57,15 +59,8 @@ public class RequirementTypeController {
     @FXML
     private Button stopSelectionButton;
 
-    private AnalyticsRepository analyticsRepository;
-    private DevelopmentRepository developmentRepository;
-    private ModerationRepository moderationRepository;
-    private ProjectRepository projectRepository;
-    private ProjectUserRepository projectUserRepository;
     private RequirementTypeRepository requirementTypeRepository;
     private RoleRepository roleRepository;
-    private TestingRepository testingRepository;
-    private UserRepository userRepository;
 
     @Setter
     private User currentUser = CurrentUserContainer.getCurrentUser();
@@ -73,15 +68,8 @@ public class RequirementTypeController {
     private RequirementType selectedRequirementType = null;
 
     public void initialize() throws SQLException, CommonException {
-        analyticsRepository = new AnalyticsRepository();
-        developmentRepository = new DevelopmentRepository();
-        moderationRepository = new ModerationRepository();
-        projectRepository = new ProjectRepository();
-        projectUserRepository = new ProjectUserRepository();
         requirementTypeRepository = new RequirementTypeRepository();
         roleRepository = new RoleRepository();
-        testingRepository = new TestingRepository();
-        userRepository = new UserRepository();
         setCellValueFactories();
         baseFillTable();
         setOnChangeListenerRequirementTypeId();
@@ -92,6 +80,7 @@ public class RequirementTypeController {
         setSaveChangesButtonOnAction();
         setDeleteButtonOnAction();
         setAddButtonOnAction();
+        addButton.setDisable(!checkIfTheCurrentUserIsAdmin());
     }
 
     private void setCellValueFactories() {
@@ -158,9 +147,7 @@ public class RequirementTypeController {
     }
 
     private void setOnActionStopSelectionButton() {
-        stopSelectionButton.setOnAction(event -> {
-            clearSelection();
-        });
+        stopSelectionButton.setOnAction(event -> clearSelection());
     }
 
     private void clearSelection() {
@@ -182,15 +169,23 @@ public class RequirementTypeController {
         requirementTypesTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection == null) {
                 selectedRequirementType = null;
-                addButton.setDisable(false);
+                try {
+                    addButton.setDisable(!checkIfTheCurrentUserIsAdmin());
+                } catch (CommonException e) {
+                    throw new RuntimeException(e);
+                }
                 saveChangesButton.setDisable(true);
                 deleteButton.setDisable(true);
                 clearFields();
             } else {
                 selectedRequirementType = newSelection;
                 addButton.setDisable(true);
-                saveChangesButton.setDisable(false);
-                deleteButton.setDisable(false);
+                try {
+                    saveChangesButton.setDisable(!checkIfTheCurrentUserIsAdmin());
+                    deleteButton.setDisable(!checkIfTheCurrentUserIsAdmin());
+                } catch (CommonException e) {
+                    throw new RuntimeException(e);
+                }
                 autoFillFields();
             }
         });
@@ -276,5 +271,12 @@ public class RequirementTypeController {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    private boolean checkIfTheCurrentUserIsAdmin() throws CommonException {
+        Role userRole = roleRepository.getRoleById(
+                currentUser.getRoleId()
+        );
+        return userRole.getRoleName().equals("ADMIN");
     }
 }
